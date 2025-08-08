@@ -1,0 +1,6 @@
+useDynLib(RcppHSLocalMDS, .registration=TRUE)
+import(Rcpp)
+import(RcppArmadillo)
+import(roptim)
+importFrom(Rcpp, evalCpp)
+exportPattern("^[[:alpha:]]+")
