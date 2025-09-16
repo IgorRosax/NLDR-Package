@@ -185,7 +185,8 @@ arma::vec getHSMdsStressGradient(arma::mat &data,const arma::vec &confVec, unsig
  };
  
  
- optimResult optimHSMds (arma::mat &data, arma::mat &conf, unsigned int &Rn, double &Gamma, int &maxIt, const std::string &optMethod){
+ optimResult cppOptimHSMds (arma::mat &data, arma::mat &conf, unsigned int &Rn, double &Gamma, 
+                         int &maxIt, const std::string &optMethod, unsigned int trace, unsigned int optReport){
    optimHSMdsStress optimStress (data, conf);
    Roptim<optimHSMdsStress> opt(optMethod);
    optimResult result;
@@ -194,6 +195,8 @@ arma::vec getHSMdsStressGradient(arma::mat &data,const arma::vec &confVec, unsig
    optimStress.setGamma(Gamma);
    
    opt.control.maxit = maxIt;
+   opt.control.trace = trace;
+   opt.control.REPORT = optReport;
    
    arma::vec minimizeParameter = vectorise(conf);
    opt.minimize(optimStress, minimizeParameter);
@@ -208,7 +211,7 @@ arma::vec getHSMdsStressGradient(arma::mat &data,const arma::vec &confVec, unsig
    return result;
  }
 
- HsMdsResult HSMDS(arma::mat &data,
+ HsMdsResult cppHSMDS(arma::mat &data,
                    arma::mat conf,
                    unsigned int Rn = 2,
                    unsigned int Kquality = 2,
@@ -218,7 +221,9 @@ arma::vec getHSMdsStressGradient(arma::mat &data,const arma::vec &confVec, unsig
                    unsigned int n_gamma = 30,
                    double rho = 0.5,
                    int maxIt = 30,
-                   const std::string optMethod = "CG"){
+                   const std::string optMethod = "CG",
+                   unsigned int optTrace = 0, 
+                   unsigned int optReport = 10){
    
    if( !data.is_square() )
      throw invalid_argument("distances must be result of 'dist' or a square matrix");
@@ -248,13 +253,15 @@ arma::vec getHSMdsStressGradient(arma::mat &data,const arma::vec &confVec, unsig
      while ( counter < n_gamma && sqrt(pow(gamma, 2)) > pow(10, -16) ){
        if(verbose)
          Rprintf("\nRunning optimHSMds for Gamma(%d) = %f\n", counter,gamma);
-       lastResult = optimHSMds(
+       lastResult = cppOptimHSMds(
          data,
          conf,
          Rn,
          gamma,
          maxIt,
-         optMethod
+         optMethod,
+         optTrace,
+         optReport
        );
        
        conf = lastResult.parameter;
@@ -272,13 +279,15 @@ arma::vec getHSMdsStressGradient(arma::mat &data,const arma::vec &confVec, unsig
      double gammaWithoutHS = 0;
      if(verbose)
        Rprintf("\nRunning optimHSMds for Gamma = 0\n");
-     bestResult = optimHSMds(
+     bestResult = cppOptimHSMds(
        data,
        conf,
        Rn,
        gammaWithoutHS,
        maxIt,
-       optMethod
+       optMethod,
+       optTrace,
+       optReport
      );
      
      conf = lastResult.parameter;

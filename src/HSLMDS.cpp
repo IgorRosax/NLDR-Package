@@ -167,7 +167,9 @@ private:
 };
 
 
-optimResult optimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neighborhood,arma::imat &notNeighborhood, unsigned int &Rn, double &tt, double &Gamma, int &maxIt, const std::string &optMethod){
+optimResult cppOptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neighborhood,arma::imat &notNeighborhood, 
+                             unsigned int &Rn, double &tt, double &Gamma, 
+                             int &maxIt, const std::string &optMethod, unsigned int trace, unsigned int optReport){
   optimHSLocalMdsStress optimStress (data, conf, neighborhood, notNeighborhood);
   Roptim<optimHSLocalMdsStress> opt(optMethod);
   optimResult result;
@@ -177,6 +179,8 @@ optimResult optimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neigh
   optimStress.setGamma(Gamma);
   
   opt.control.maxit = maxIt;
+  opt.control.trace = trace;
+  opt.control.REPORT = optReport;
   
   arma::vec minimizeParameter = vectorise(conf);
   opt.minimize(optimStress, minimizeParameter);
@@ -191,7 +195,7 @@ optimResult optimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neigh
   return result;
 }
 
-HsLocalMdsResult HSlocalMDS (arma::mat &data,
+HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
                              arma::mat conf,
                              unsigned int Rn = 2,
                              unsigned int Kproj = 5,
@@ -206,7 +210,9 @@ HsLocalMdsResult HSlocalMDS (arma::mat &data,
                              unsigned int n_gamma = 30,
                              double rho = 0.5,
                              int maxIt = 30,
-                             const std::string optMethod = "CG"){
+                             const std::string optMethod = "CG",
+                             unsigned int optTrace = 0, 
+                             unsigned int optReport = 10){
   
   double smallerGammaAllowed;
   smallerGammaAllowed = pow(10, -16);
@@ -301,7 +307,7 @@ HsLocalMdsResult HSlocalMDS (arma::mat &data,
       if (verbose)
         Rprintf("\nRunning optimLocalMds for tt(%i) = %f and Gamma = 0\n", i,ttList(i));
       
-      lastResult = optimHSLocalMds(
+      lastResult = cppOptimHSLocalMds(
         data,
         lastConf,
         neighborhood,
@@ -310,7 +316,9 @@ HsLocalMdsResult HSlocalMDS (arma::mat &data,
         ttList(i),
         gammaOnTauSelection,
         maxIt,
-        optMethod
+        optMethod,
+        optTrace,
+        optReport
       );
       
       lastConf = lastResult.parameter;
@@ -334,15 +342,14 @@ HsLocalMdsResult HSlocalMDS (arma::mat &data,
   }
   
   if (applyHiperbolicSmoothing){
-    
     unsigned int counter= 0;
     
     while ( counter < n_gamma && sqrt(pow(gamma, 2)) > smallerGammaAllowed ){
       
       if (verbose)
-        Rprintf("\nRunning optimHSLocalMds or tt = %f and Gamma(%d) = %f\n", tt, counter, gamma);
+        Rprintf("\nRunning optimHSLocalMds for tt = %f and Gamma(%d) = %f\n", tt, counter, gamma);
       
-      lastResult = optimHSLocalMds(
+      lastResult = cppOptimHSLocalMds(
         data,
         conf,
         neighborhood,
@@ -351,7 +358,9 @@ HsLocalMdsResult HSlocalMDS (arma::mat &data,
         tt,
         gamma,
         maxIt,
-        optMethod
+        optMethod,
+        optTrace,
+        optReport
       );
       
       conf = lastResult.parameter;
@@ -373,12 +382,15 @@ HsLocalMdsResult HSlocalMDS (arma::mat &data,
     }
     
   }
+
   
   conf = bestResult.parameter;
-  
+
   double gammaStressTest = 0;
   double stress = getHSLocalMdsStress(data, vectorise(conf), neighborhood,
                                       notNeighborhood, Rn, tt, gammaStressTest);
+  
+  
   conf = reshape(conf, Rn, data.n_rows);
   conf = conf.t();
   
@@ -390,7 +402,6 @@ HsLocalMdsResult HSlocalMDS (arma::mat &data,
   result.stress = stress;
   result.tau = tau;
   result.tt = tt;
-  
   
   return result;
   

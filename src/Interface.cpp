@@ -2,7 +2,7 @@
 // [[Rcpp::depends(roptim)]]
 #include "HSLMDS_HELPERS.h"
 #include "HSMDS.h"
-#include "HSLocalMDS.h"
+#include "HSLMDS.h"
 
 #include <RcppArmadillo.h>
 
@@ -71,13 +71,16 @@ Rcpp::List RcppGetLocalContinuityMetaCriterionByVector(arma::mat &data, arma::ma
 //' @param Gamma A numeric constant value used for smoothing the configuration.
 //' @param maxIt The number of optimizing iterations to assess the quality of the projection.
 //' @param optMethod The optimization method. It is possible to choose one of these methods: "Nelder-Mead", "BFGS", "CG", "L-BFGS-B".
+//' @param optTrace Non-negative integer. If positive, tracing information on the progress of the optimization is produced. Higher values may produce more tracing information: for method "L-BFGS-B" there are six levels of tracing.
+//' @param optReport  The frequency of reports for the "BFGS", "L-BFGS-B" and "SANN" methods if optTrace is positive.
 //' 
 //' @return optimResult   A list with results from optimization process.
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List RcppOptimHSMds (arma::mat &data, arma::mat &conf, unsigned int &Rn, double &Gamma, int &maxIt, const std::string &optMethod ){
- optimResult result = optimHSMds (data, conf, Rn, Gamma, maxIt, optMethod);
+Rcpp::List OptimHSMds (arma::mat &data, arma::mat &conf, unsigned int &Rn, double &Gamma, int &maxIt, 
+                           const std::string &optMethod , unsigned int optTrace = 0, unsigned int optReport = 10){
+ optimResult result = cppOptimHSMds (data, conf, Rn, Gamma, maxIt, optMethod, optTrace, optReport);
  
  return Rcpp::List::create(
    Rcpp::Named("parameter") = result.parameter,
@@ -101,13 +104,18 @@ Rcpp::List RcppOptimHSMds (arma::mat &data, arma::mat &conf, unsigned int &Rn, d
 //' @param Gamma A numeric constant value used for smoothing the configuration.
 //' @param maxIt The number of optimizing iterations to assess the quality of the projection.
 //' @param optMethod The optimization method. It is possible to choose one of these methods: "Nelder-Mead", "BFGS", "CG", "L-BFGS-B".
+//' @param optTrace Non-negative integer. If positive, tracing information on the progress of the optimization is produced. Higher values may produce more tracing information: for method "L-BFGS-B" there are six levels of tracing.
+//' @param optReport  The frequency of reports for the "BFGS", "L-BFGS-B" and "SANN" methods if optTrace is positive.
 //' 
 //' @return optimResult   A list with results from optimization process.
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List RcppOptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neighborhood,arma::imat &notNeighborhood, unsigned int &Rn, double &tt, double &Gamma, int &maxIt, const std::string &optMethod ){
- optimResult result = optimHSLocalMds (data, conf, neighborhood, notNeighborhood, Rn, tt, Gamma, maxIt, optMethod);
+Rcpp::List OptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neighborhood,arma::imat &notNeighborhood, 
+                                unsigned int &Rn, double &tt, double &Gamma, 
+                                int &maxIt, const std::string &optMethod, unsigned int optTrace = 0, unsigned int optReport = 10){
+ optimResult result = cppOptimHSLocalMds (data, conf, neighborhood, notNeighborhood, Rn, tt, Gamma, maxIt, 
+                                       optMethod, optTrace, optReport);
  
  return Rcpp::List::create(
    Rcpp::Named("parameter") = result.parameter,
@@ -136,6 +144,8 @@ Rcpp::List RcppOptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &ne
 //' @param rho A numeric constant value between 0 and 1 used for decrease gamma value.
 //' @param maxIt It is the control argument of the function optim.
 //' @param optMethod The optimization method. The default is "CG", a conjugate gradients method.  it is possible to choose one of these methods: "Nelder-Mead", "BFGS", "CG", "L-BFGS-B".
+//' @param optTrace Non-negative integer. If positive, tracing information on the progress of the optimization is produced. Higher values may produce more tracing information: for method "L-BFGS-B" there are six levels of tracing.
+//' @param optReport  The frequency of reports for the "BFGS", "L-BFGS-B" and "SANN" methods if optTrace is positive.
 //' @return Five components:
 //' @return conf   The points projected in 'd' dimension space.
 //' @return LocalContinuityResult   The criterion Local Continuity (LC).
@@ -156,7 +166,7 @@ Rcpp::List RcppOptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &ne
 //' conf = cmdscale(d = dataset, k = Rn)
 //' conf = as.matrix(conf)
 //' 
-//' RcppHSMDSResult = RcppHSMDS(data = as.matrix(d), 
+//' HSMDSResult = HSMDS(data = as.matrix(d), 
 //'                                       conf = conf,
 //'                                       Kquality = 5,
 //'                                       Rn = 1,
@@ -169,12 +179,12 @@ Rcpp::List RcppOptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &ne
 //' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1,
 //'      main="u-shaped curve projected to one dimensional space",
 //'      sub= titulo,cex.sub=0.7,cex.main=0.7)
-//' segments(x,x^4+1,RcppHSMDSResult$conf , rep(0,length(x)), col = "blue")
+//' segments(x,x^4+1,HSMDSResult$conf , rep(0,length(x)), col = "blue")
 //' abline(h=0)
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List RcppHSMDS(arma::mat &data,
+Rcpp::List HSMDS(arma::mat &data,
                     arma::mat conf,
                     unsigned int Rn = 2,
                     unsigned int Kquality = 2,
@@ -184,11 +194,13 @@ Rcpp::List RcppHSMDS(arma::mat &data,
                     unsigned int n_gamma = 30,
                     double rho = 0.5,
                     int maxIt = 30,
-                    const std::string optMethod = "CG")
+                    const std::string optMethod = "CG", 
+                    unsigned int optTrace = 0, 
+                    unsigned int optReport = 10)
 {
  HsMdsResult result;
  
- result = HSMDS(data,
+ result = cppHSMDS(data,
                 conf,
                 Rn,
                 Kquality,
@@ -198,7 +210,9 @@ Rcpp::List RcppHSMDS(arma::mat &data,
                 n_gamma,
                 rho,
                 maxIt,
-                optMethod);
+                optMethod,
+                optTrace,
+                optReport);
  
  
  Rcpp::List LcmcList =   Rcpp::List::create(
@@ -248,6 +262,8 @@ Rcpp::List RcppHSMDS(arma::mat &data,
 //' @param rho A numeric constant value between 0 and 1 used for decrease gamma value.
 //' @param maxIt It is the control argument of the function optim.
 //' @param optMethod The optimization method. The default is "CG", a conjugate gradients method.  it is possible to choose one of these methods: "Nelder-Mead", "BFGS", "CG", "L-BFGS-B".
+//' @param optTrace Non-negative integer. If positive, tracing information on the progress of the optimization is produced. Higher values may produce more tracing information: for method "L-BFGS-B" there are six levels of tracing.
+//' @param optReport  The frequency of reports for the "BFGS", "L-BFGS-B" and "SANN" methods if optTrace is positive.
 //' @return Five components:
 //' @return conf   The points projected in 'd' dimension space.
 //' @return LocalContinuityResult   The criterion Local Continuity (LC).
@@ -272,7 +288,7 @@ Rcpp::List RcppHSMDS(arma::mat &data,
 //' conf = cmdscale(d = dataset, k = Rn)
 //' conf = as.matrix(conf)
 //' 
-//' RcppHSlocalMDSResult = RcppHSlocalMDS(data = as.matrix(d), 
+//' HSlocalMDSResult = HSlocalMDS(data = as.matrix(d), 
 //'                                       conf = conf,
 //'                                       Rn = 1,
 //'                                       Kproj = 5, 
@@ -291,12 +307,12 @@ Rcpp::List RcppHSMDS(arma::mat &data,
 //' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1,
 //'      main="u-shaped curve projected to one dimensional space",
 //'      sub= titulo,cex.sub=0.7,cex.main=0.7)
-//' segments(x,x^4+1,RcppHSlocalMDSResult$conf , rep(0,length(x)), col = "blue")
+//' segments(x,x^4+1,HSlocalMDSResult$conf , rep(0,length(x)), col = "blue")
 //' abline(h=0)
 //' 
 //' @export
 // [[Rcpp::export]]
-Rcpp::List RcppHSlocalMDS(arma::mat &data,
+Rcpp::List HSlocalMDS(arma::mat &data,
                          arma::mat conf,
                          unsigned int Rn = 2,
                          unsigned int Kproj = 5,
@@ -311,11 +327,13 @@ Rcpp::List RcppHSlocalMDS(arma::mat &data,
                          unsigned int n_gamma = 30,
                          double rho = 0.5,
                          int maxIt = 30,
-                         const std::string optMethod = "CG")
+                         const std::string optMethod = "CG", 
+                         unsigned int optTrace = 0, 
+                         unsigned int optReport = 10)
 {
  HsLocalMdsResult result;
  
- result = HSlocalMDS(data,
+ result = cppHSlocalMDS(data,
                      conf,
                      Rn,
                      Kproj,
@@ -330,7 +348,10 @@ Rcpp::List RcppHSlocalMDS(arma::mat &data,
                      n_gamma,
                      rho,
                      maxIt,
-                     optMethod);
+                     optMethod,
+                     optTrace,
+                     optReport);
+ 
  
  Rcpp::List LcmcList =   Rcpp::List::create(
    Rcpp::Named("Nk") = result.LCMC.Nk,
