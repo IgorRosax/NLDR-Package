@@ -8,11 +8,12 @@ HSLocalMDS implements the **Hyperbolic Smoothing Local Multidimensional Scaling 
 
 ## Features
 
-- Efficient C++ implementation with R interface via Rcpp
-- Euclidean distance matrix computation
-- Construction of neighborhood matrices and vectors
-- Objective function and gradient calculation for HSLocalMDS
-- Parameter optimization for the method
+- Dimensionality reduction algorithms: HSLocalMDS, LocalMDS, HSMDS, and MDS
+- Analytical computation of objective functions and gradients for all supported methods
+- Local Continuity Meta Criterion (LCMC) for quantitative evaluation of embeddings
+- Euclidean distance matrix calculation
+- Flexible construction of neighborhood matrices and vectors
+- High-performance C++ with seamless R integration via Rcpp
 
 ## Project Structure
 
