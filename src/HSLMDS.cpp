@@ -196,23 +196,23 @@ optimResult cppOptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &ne
 }
 
 HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
-                             arma::mat conf,
-                             unsigned int Rn = 2,
-                             unsigned int Kproj = 5,
-                             unsigned int Kquality = 0,
-                             bool verbose = false,
-                             bool selectBetterUnitFree = false,
-                             double smallerUnitFree = 0.0001,
-                             unsigned int n_t = 10,
-                             double ratio = 3.162278,
-                             bool applyHiperbolicSmoothing = true,
-                             double gamma = 1,
-                             unsigned int n_gamma = 30,
-                             double rho = 0.5,
-                             int maxIt = 30,
-                             const std::string optMethod = "CG",
-                             unsigned int optTrace = 0, 
-                             unsigned int optReport = 10){
+                             arma::mat &conf,
+                             unsigned int Rn,
+                             unsigned int Kproj,
+                             unsigned int Kquality,
+                             bool verbose,
+                             bool selectBetterUnitFree,
+                             double smallerUnitFree,
+                             unsigned int n_t,
+                             double ratio,
+                             bool applyHyperbolicSmoothing,
+                             double gamma,
+                             unsigned int n_gamma,
+                             double rho,
+                             int maxIt,
+                             const std::string optMethod,
+                             unsigned int optTrace, 
+                             unsigned int optReport){
   
   double smallerGammaAllowed;
   smallerGammaAllowed = pow(10, -16);
@@ -239,14 +239,14 @@ HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
   if(selectBetterUnitFree && ratio <= 1)
     throw invalid_argument ("The 'ratio' must be greater than 1 for the 'selectBetterUnitFree' option");
   
-  if(applyHiperbolicSmoothing && (rho > 1 || rho < 0))
+  if(applyHyperbolicSmoothing && (rho > 1 || rho < 0))
     throw invalid_argument ("The 'rho' must be greater than 0 and lower than 1");
   
-  if(applyHiperbolicSmoothing && gamma == 0)
-    throw invalid_argument ("The 'gamma' must be different than 0 for the 'applyHiperbolicSmoothing' option");
+  if(applyHyperbolicSmoothing && gamma == 0)
+    throw invalid_argument ("The 'gamma' must be different than 0 for the 'applyHyperbolicSmoothing' option");
   
-  if(applyHiperbolicSmoothing && n_gamma <= 0)
-    throw invalid_argument ("The 'n_gamma' must be greater than 0 for the 'applyHiperbolicSmoothing' option");
+  if(applyHyperbolicSmoothing && n_gamma <= 0)
+    throw invalid_argument ("The 'n_gamma' must be greater than 0 for the 'applyHyperbolicSmoothing' option");
   
   if( Kquality == 0 ) 
     Kquality = Kproj;
@@ -341,7 +341,7 @@ HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
     tt = bestTt;
   }
   
-  if (applyHiperbolicSmoothing){
+  if (applyHyperbolicSmoothing){
     unsigned int counter= 0;
     
     while ( counter < n_gamma && sqrt(pow(gamma, 2)) > smallerGammaAllowed ){

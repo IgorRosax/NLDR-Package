@@ -204,17 +204,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // HSMDS
-Rcpp::List HSMDS(arma::mat& data, arma::mat conf, unsigned int Rn, unsigned int Kquality, bool verbose, bool applyHiperbolicSmoothing, double gamma, unsigned int n_gamma, double rho, int maxIt, const std::string optMethod, unsigned int optTrace, unsigned int optReport);
-RcppExport SEXP _HSLocalMDS_HSMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP applyHiperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
+Rcpp::List HSMDS(arma::mat& data, Rcpp::Nullable<arma::mat> conf, unsigned int Rn, unsigned int Kquality, bool verbose, bool applyHyperbolicSmoothing, double gamma, unsigned int n_gamma, double rho, int maxIt, const std::string optMethod, unsigned int optTrace, unsigned int optReport);
+RcppExport SEXP _HSLocalMDS_HSMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP applyHyperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat& >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type conf(confSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type conf(confSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type Rn(RnSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type Kquality(KqualitySEXP);
     Rcpp::traits::input_parameter< bool >::type verbose(verboseSEXP);
-    Rcpp::traits::input_parameter< bool >::type applyHiperbolicSmoothing(applyHiperbolicSmoothingSEXP);
+    Rcpp::traits::input_parameter< bool >::type applyHyperbolicSmoothing(applyHyperbolicSmoothingSEXP);
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type n_gamma(n_gammaSEXP);
     Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
@@ -222,18 +222,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string >::type optMethod(optMethodSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type optTrace(optTraceSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type optReport(optReportSEXP);
-    rcpp_result_gen = Rcpp::wrap(HSMDS(data, conf, Rn, Kquality, verbose, applyHiperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport));
+    rcpp_result_gen = Rcpp::wrap(HSMDS(data, conf, Rn, Kquality, verbose, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport));
     return rcpp_result_gen;
 END_RCPP
 }
 // HSlocalMDS
-Rcpp::List HSlocalMDS(arma::mat& data, arma::mat conf, unsigned int Rn, unsigned int Kproj, unsigned int Kquality, bool verbose, bool selectBetterUnitFree, double smallerUnitFree, unsigned int n_t, double ratio, bool applyHiperbolicSmoothing, double gamma, unsigned int n_gamma, double rho, int maxIt, const std::string optMethod, unsigned int optTrace, unsigned int optReport);
-RcppExport SEXP _HSLocalMDS_HSlocalMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KprojSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP selectBetterUnitFreeSEXP, SEXP smallerUnitFreeSEXP, SEXP n_tSEXP, SEXP ratioSEXP, SEXP applyHiperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
+Rcpp::List HSlocalMDS(arma::mat& data, Rcpp::Nullable<arma::mat> conf, unsigned int Rn, unsigned int Kproj, unsigned int Kquality, bool verbose, bool selectBetterUnitFree, double smallerUnitFree, unsigned int n_t, double ratio, bool applyHyperbolicSmoothing, double gamma, unsigned int n_gamma, double rho, int maxIt, const std::string optMethod, unsigned int optTrace, unsigned int optReport);
+RcppExport SEXP _HSLocalMDS_HSlocalMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KprojSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP selectBetterUnitFreeSEXP, SEXP smallerUnitFreeSEXP, SEXP n_tSEXP, SEXP ratioSEXP, SEXP applyHyperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< arma::mat& >::type data(dataSEXP);
-    Rcpp::traits::input_parameter< arma::mat >::type conf(confSEXP);
+    Rcpp::traits::input_parameter< Rcpp::Nullable<arma::mat> >::type conf(confSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type Rn(RnSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type Kproj(KprojSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type Kquality(KqualitySEXP);
@@ -242,7 +242,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type smallerUnitFree(smallerUnitFreeSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type n_t(n_tSEXP);
     Rcpp::traits::input_parameter< double >::type ratio(ratioSEXP);
-    Rcpp::traits::input_parameter< bool >::type applyHiperbolicSmoothing(applyHiperbolicSmoothingSEXP);
+    Rcpp::traits::input_parameter< bool >::type applyHyperbolicSmoothing(applyHyperbolicSmoothingSEXP);
     Rcpp::traits::input_parameter< double >::type gamma(gammaSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type n_gamma(n_gammaSEXP);
     Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
@@ -250,7 +250,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const std::string >::type optMethod(optMethodSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type optTrace(optTraceSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type optReport(optReportSEXP);
-    rcpp_result_gen = Rcpp::wrap(HSlocalMDS(data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHiperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport));
+    rcpp_result_gen = Rcpp::wrap(HSlocalMDS(data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport));
     return rcpp_result_gen;
 END_RCPP
 }

@@ -2,7 +2,7 @@ Package: HSLocalMDS
 Type: Package
 Title: Rcpp Integration for the Hyperbolic Smoothing Local
         Multidimensional Scaling method of Dimensionality Reduction
-Version: 0.18
+Version: 0.19
 Date: 2025-08-25
 Author: Igor Rosa, , Vinicius Xavier, Fabiano Oliveira
 Maintainer: Igor Rosa <igor.rosa@pos.ime.uerj.br>, Vinicius Layter Xavier <viniciuslx@ime.uerj.br>, Fabiano Oliveira <fabiano.oliveira@ime.uerj.br>
@@ -14,4 +14,4 @@ LinkingTo: Rcpp, RcppArmadillo, roptim
 RoxygenNote: 7.3.2
 Encoding: UTF-8
 NeedsCompilation: yes
-Packaged: 2025-08-28 02:56:30 UTC; Igor
+Packaged: 2025-09-26 05:28:31 UTC; Igor

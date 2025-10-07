@@ -6,15 +6,15 @@
 \usage{
 HSMDS(
   data,
-  conf,
+  conf = NULL,
   Rn = 2L,
   Kquality = 2L,
   verbose = FALSE,
-  applyHiperbolicSmoothing = TRUE,
+  applyHyperbolicSmoothing = TRUE,
   gamma = 1,
-  n_gamma = 30L,
-  rho = 0.5,
-  maxIt = 30L,
+  n_gamma = 10000L,
+  rho = 0.3162278,
+  maxIt = 10000L,
   optMethod = "CG",
   optTrace = 0L,
   optReport = 10L
@@ -23,7 +23,7 @@ HSMDS(
 \arguments{
 \item{data}{A distance matrix (dist()) or a square matrix.}
 
-\item{conf}{An initial configuration. If none is supplied the configuration will be randomly generated. If x=="cmdscale", the function cmdscale() is used to provide an inicial configuration.}
+\item{conf}{An initial configuration. If none is supplied the configuration will be generated using PCA.}
 
 \item{Rn}{The dimension of the space which the data will be represented in. The default is Rn=2.}
 
@@ -31,7 +31,7 @@ HSMDS(
 
 \item{verbose}{A boolean constant. If true, informations will be printed on terminal during the execution.}
 
-\item{applyHiperbolicSmoothing}{A boolean constant. If true, the Hiperbolic Smoothing will be applyed.}
+\item{applyHyperbolicSmoothing}{A boolean constant. If true, the Hyperbolic Smoothing will be applyed.}
 
 \item{gamma}{A numeric constant value used for smoothing the configuration.}
 
@@ -60,34 +60,31 @@ optimResult   A list with results from optimization process.
 A Smoothing Optimization Approach Applied to the MDS Method
 }
 \examples{
+
 # A U-shaped curve, (x^4+1), R^2 projected in R^1
+library(HSLocalMDS)
 set.seed(1)
 x<-seq(0.9,1.5,0.05)
 xx<-seq(-1,1,0.2)+runif(11,0,0.1)
 x<-c(-x,x,xx)
 Ccurve<-cbind(x,x^4+1)
 d<-stats::dist (Ccurve)
-dataset<- as.matrix(d)
 Rn = 1
 
-
-conf = cmdscale(d = dataset, k = Rn)
-conf = as.matrix(conf)
+conf = as.matrix(cmdscale(d = d, k = Rn))
 
 HSMDSResult = HSMDS(data = as.matrix(d), 
-                                      conf = conf,
-                                      Kquality = 5,
-                                      Rn = 1,
-                                      maxIt = 10000, 
-                                      optMethod = "CG"
+                    conf = conf,
+                    Kquality = 5,
+                    Rn = Rn
 )
 
 titulo <- expression(paste("Blue lines connect the observation in ",
                             R^2," to the projection in ",R^1))
-plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1,
+plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1, pch = 1,
      main="u-shaped curve projected to one dimensional space",
      sub= titulo,cex.sub=0.7,cex.main=0.7)
 segments(x,x^4+1,HSMDSResult$conf , rep(0,length(x)), col = "blue")
+points(HSMDSResult$conf,rep(0,length(x)), pch = 16,cex=0.7)
 abline(h=0)
-
 }

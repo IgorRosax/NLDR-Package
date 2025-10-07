@@ -134,11 +134,11 @@ Rcpp::List OptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neighb
 //' A Smoothing Optimization Approach Applied to the MDS Method
 //'
 //' @param data A distance matrix (dist()) or a square matrix.
-//' @param conf An initial configuration. If none is supplied the configuration will be randomly generated. If x=="cmdscale", the function cmdscale() is used to provide an inicial configuration.
+//' @param conf An initial configuration. If none is supplied the configuration will be generated using PCA.
 //' @param Rn The dimension of the space which the data will be represented in. The default is Rn=2.
 //' @param Kquality The number of neighborhood applied at Local Continuity to assess the quality of the projection. The default is NULL, set the same number at Kproj.
 //' @param verbose A boolean constant. If true, informations will be printed on terminal during the execution.
-//' @param applyHiperbolicSmoothing A boolean constant. If true, the Hiperbolic Smoothing will be applyed.
+//' @param applyHyperbolicSmoothing A boolean constant. If true, the Hyperbolic Smoothing will be applyed.
 //' @param gamma A numeric constant value used for smoothing the configuration.
 //' @param n_gamma maximum number of gamma values allowed.
 //' @param rho A numeric constant value between 0 and 1 used for decrease gamma value.
@@ -152,67 +152,79 @@ Rcpp::List OptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neighb
 //' @return optimResult   A list with results from optimization process.
 //' 
 //' @examples
+//' 
 //' # A U-shaped curve, (x^4+1), R^2 projected in R^1
+//' library(HSLocalMDS)
 //' set.seed(1)
 //' x<-seq(0.9,1.5,0.05)
 //' xx<-seq(-1,1,0.2)+runif(11,0,0.1)
 //' x<-c(-x,x,xx)
 //' Ccurve<-cbind(x,x^4+1)
 //' d<-stats::dist (Ccurve)
-//' dataset<- as.matrix(d)
 //' Rn = 1
 //' 
-//' 
-//' conf = cmdscale(d = dataset, k = Rn)
-//' conf = as.matrix(conf)
+//' conf = as.matrix(cmdscale(d = d, k = Rn))
 //' 
 //' HSMDSResult = HSMDS(data = as.matrix(d), 
-//'                                       conf = conf,
-//'                                       Kquality = 5,
-//'                                       Rn = 1,
-//'                                       maxIt = 10000, 
-//'                                       optMethod = "CG"
+//'                     conf = conf,
+//'                     Kquality = 5,
+//'                     Rn = Rn
 //' )
 //' 
 //' titulo <- expression(paste("Blue lines connect the observation in ",
 //'                             R^2," to the projection in ",R^1))
-//' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1,
+//' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1, pch = 1,
 //'      main="u-shaped curve projected to one dimensional space",
 //'      sub= titulo,cex.sub=0.7,cex.main=0.7)
 //' segments(x,x^4+1,HSMDSResult$conf , rep(0,length(x)), col = "blue")
+//' points(HSMDSResult$conf,rep(0,length(x)), pch = 16,cex=0.7)
 //' abline(h=0)
-//' 
 //' @export
 // [[Rcpp::export]]
 Rcpp::List HSMDS(arma::mat &data,
-                    arma::mat conf,
+                    Rcpp::Nullable<arma::mat> conf = R_NilValue,
                     unsigned int Rn = 2,
                     unsigned int Kquality = 2,
                     bool verbose = false,
-                    bool applyHiperbolicSmoothing = true,
+                    bool applyHyperbolicSmoothing = true,
                     double gamma = 1,
-                    unsigned int n_gamma = 30,
-                    double rho = 0.5,
-                    int maxIt = 30,
+                    unsigned int n_gamma = 10000,
+                    double rho = 0.3162278,
+                    int maxIt = 10000,
                     const std::string optMethod = "CG", 
                     unsigned int optTrace = 0, 
                     unsigned int optReport = 10)
 {
  HsMdsResult result;
  
- result = cppHSMDS(data,
-                conf,
-                Rn,
-                Kquality,
-                verbose,
-                applyHiperbolicSmoothing,
-                gamma,
-                n_gamma,
-                rho,
-                maxIt,
-                optMethod,
-                optTrace,
-                optReport);
+ arma::mat coeff;
+ arma::mat confMat;
+ 
+ if (conf.isNotNull()) {
+   if (verbose)
+     Rprintf ("Initial configuration provided.");
+   confMat = Rcpp::as<arma::mat>(conf);
+   
+ } else {
+   if (verbose)
+     Rprintf ("Initial configuration was not provided. Using PCA result as initial configuration.");
+   arma::princomp(coeff, confMat, data);
+   confMat = confMat.cols(0,Rn-1);
+ }
+ 
+ result = cppHSMDS( data,
+                    confMat,
+                    Rn,
+                    Kquality,
+                    verbose,
+                    applyHyperbolicSmoothing,
+                    gamma,
+                    n_gamma,
+                    rho,
+                    maxIt,
+                    optMethod,
+                    optTrace,
+                    optReport);
  
  
  Rcpp::List LcmcList =   Rcpp::List::create(
@@ -247,7 +259,7 @@ Rcpp::List HSMDS(arma::mat &data,
 //' A Smoothing Optimization Approach Applied to the Local MDS Method
 //'
 //' @param data A distance matrix (dist()) or a square matrix.
-//' @param conf An initial configuration. If none is supplied the configuration will be randomly generated. If x=="cmdscale", the function cmdscale() is used to provide an inicial configuration.
+//' @param conf An initial configuration. If none is supplied the configuration will be generated using PCA.
 //' @param Rn The dimension of the space which the data will be represented in. The default is Rn=2.
 //' @param Kproj The number of neighborhood to be preserved in the projection.
 //' @param Kquality The number of neighborhood applied at Local Continuity to assess the quality of the projection. The default is NULL, set the same number at Kproj.
@@ -256,7 +268,7 @@ Rcpp::List HSMDS(arma::mat &data,
 //' @param smallerUnitFree the smallest value for the unit free parameter. Geometric sequence's start value.
 //' @param n_t length for the grid search.
 //' @param ratio ratio of the geometric sequence.
-//' @param applyHiperbolicSmoothing A boolean constant. If true, the Hiperbolic Smoothing will be applyed.
+//' @param applyHyperbolicSmoothing A boolean constant. If true, the Hyperbolic Smoothing will be applyed.
 //' @param gamma A numeric constant value used for smoothing the configuration.
 //' @param n_gamma maximum number of gamma values allowed.
 //' @param rho A numeric constant value between 0 and 1 used for decrease gamma value.
@@ -276,81 +288,89 @@ Rcpp::List HSMDS(arma::mat &data,
 //'
 //' @examples
 //' # A U-shaped curve, (x^4+1), R^2 projected in R^1
+//' library(HSLocalMDS)
 //' set.seed(1)
 //' x<-seq(0.9,1.5,0.05)
 //' xx<-seq(-1,1,0.2)+runif(11,0,0.1)
 //' x<-c(-x,x,xx)
 //' Ccurve<-cbind(x,x^4+1)
 //' d<-stats::dist (Ccurve)
-//' dataset<- as.matrix(d)
 //' Rn = 1
 //' 
-//' conf = cmdscale(d = dataset, k = Rn)
-//' conf = as.matrix(conf)
+//' conf = as.matrix(cmdscale(d = d, k = Rn))
 //' 
 //' HSlocalMDSResult = HSlocalMDS(data = as.matrix(d), 
 //'                                       conf = conf,
-//'                                       Rn = 1,
-//'                                       Kproj = 5, 
-//'                                       Kquality = 5,
-//'                                       smallerUnitFree = 0.1,
-//'                                       applyHiperbolicSmoothing = TRUE,
-//'                                       gamma = 1,
-//'                                       n_gamma = 10000,
-//'                                       rho = (1 / sqrt(10)),
-//'                                       maxIt = 10000, 
-//'                                       optMethod = "CG"
+//'                                       Rn = Rn,
+//'                                       Kproj = 5,
+//'                                       Kquality = 5
 //' )
 //' 
 //' titulo <- expression(paste("Blue lines connect the observation in ",
 //'                             R^2," to the projection in ",R^1))
-//' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1,
+//' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1, pch = 1,
 //'      main="u-shaped curve projected to one dimensional space",
 //'      sub= titulo,cex.sub=0.7,cex.main=0.7)
 //' segments(x,x^4+1,HSlocalMDSResult$conf , rep(0,length(x)), col = "blue")
+//' points(HSlocalMDSResult$conf,rep(0,length(x)), pch = 16,cex=0.7)
 //' abline(h=0)
 //' 
 //' @export
 // [[Rcpp::export]]
 Rcpp::List HSlocalMDS(arma::mat &data,
-                         arma::mat conf,
-                         unsigned int Rn = 2,
-                         unsigned int Kproj = 5,
-                         unsigned int Kquality = 0,
-                         bool verbose = false,
-                         bool selectBetterUnitFree = false,
-                         double smallerUnitFree = 0.0001,
-                         unsigned int n_t = 10,
-                         double ratio = 3.162278,
-                         bool applyHiperbolicSmoothing = true,
-                         double gamma = 1,
-                         unsigned int n_gamma = 30,
-                         double rho = 0.5,
-                         int maxIt = 30,
-                         const std::string optMethod = "CG", 
-                         unsigned int optTrace = 0, 
-                         unsigned int optReport = 10)
+                      Rcpp::Nullable<arma::mat> conf = R_NilValue,
+                      unsigned int Rn = 2,
+                      unsigned int Kproj = 5,
+                      unsigned int Kquality = 0,
+                      bool verbose = false,
+                      bool selectBetterUnitFree = true,
+                      double smallerUnitFree = 0.0001,
+                      unsigned int n_t = 8,
+                      double ratio = 3.162278,
+                      bool applyHyperbolicSmoothing = true,
+                      double gamma = 1,
+                      unsigned int n_gamma = 10000,
+                      double rho = 0.3162278,
+                      int maxIt = 10000,
+                      const std::string optMethod = "CG", 
+                      unsigned int optTrace = 0, 
+                      unsigned int optReport = 10)
 {
  HsLocalMdsResult result;
+  
+ arma::mat coeff;
+ arma::mat confMat;
  
- result = cppHSlocalMDS(data,
-                     conf,
-                     Rn,
-                     Kproj,
-                     Kquality,
-                     verbose,
-                     selectBetterUnitFree,
-                     smallerUnitFree,
-                     n_t,
-                     ratio,
-                     applyHiperbolicSmoothing,
-                     gamma,
-                     n_gamma,
-                     rho,
-                     maxIt,
-                     optMethod,
-                     optTrace,
-                     optReport);
+ if (conf.isNotNull()) {
+   if (verbose)
+     Rprintf ("Initial configuration provided.");
+   confMat = Rcpp::as<arma::mat>(conf);
+   
+ } else {
+   if (verbose)
+     Rprintf ("Initial configuration was not provided. Using PCA result as initial configuration.");
+   arma::princomp(coeff, confMat, data);
+   confMat = confMat.cols(0,Rn-1);
+ }
+ 
+ result = cppHSlocalMDS( data,
+                         confMat,
+                         Rn,
+                         Kproj,
+                         Kquality,
+                         verbose,
+                         selectBetterUnitFree,
+                         smallerUnitFree,
+                         n_t,
+                         ratio,
+                         applyHyperbolicSmoothing,
+                         gamma,
+                         n_gamma,
+                         rho,
+                         maxIt,
+                         optMethod,
+                         optTrace,
+                         optReport);
  
  
  Rcpp::List LcmcList =   Rcpp::List::create(

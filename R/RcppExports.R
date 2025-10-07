@@ -344,11 +344,11 @@ OptimHSLocalMds <- function(data, conf, neighborhood, notNeighborhood, Rn, tt, G
 #' A Smoothing Optimization Approach Applied to the MDS Method
 #'
 #' @param data A distance matrix (dist()) or a square matrix.
-#' @param conf An initial configuration. If none is supplied the configuration will be randomly generated. If x=="cmdscale", the function cmdscale() is used to provide an inicial configuration.
+#' @param conf An initial configuration. If none is supplied the configuration will be generated using PCA.
 #' @param Rn The dimension of the space which the data will be represented in. The default is Rn=2.
 #' @param Kquality The number of neighborhood applied at Local Continuity to assess the quality of the projection. The default is NULL, set the same number at Kproj.
 #' @param verbose A boolean constant. If true, informations will be printed on terminal during the execution.
-#' @param applyHiperbolicSmoothing A boolean constant. If true, the Hiperbolic Smoothing will be applyed.
+#' @param applyHyperbolicSmoothing A boolean constant. If true, the Hyperbolic Smoothing will be applyed.
 #' @param gamma A numeric constant value used for smoothing the configuration.
 #' @param n_gamma maximum number of gamma values allowed.
 #' @param rho A numeric constant value between 0 and 1 used for decrease gamma value.
@@ -362,39 +362,36 @@ OptimHSLocalMds <- function(data, conf, neighborhood, notNeighborhood, Rn, tt, G
 #' @return optimResult   A list with results from optimization process.
 #' 
 #' @examples
+#' 
 #' # A U-shaped curve, (x^4+1), R^2 projected in R^1
+#' library(HSLocalMDS)
 #' set.seed(1)
 #' x<-seq(0.9,1.5,0.05)
 #' xx<-seq(-1,1,0.2)+runif(11,0,0.1)
 #' x<-c(-x,x,xx)
 #' Ccurve<-cbind(x,x^4+1)
 #' d<-stats::dist (Ccurve)
-#' dataset<- as.matrix(d)
 #' Rn = 1
 #' 
-#' 
-#' conf = cmdscale(d = dataset, k = Rn)
-#' conf = as.matrix(conf)
+#' conf = as.matrix(cmdscale(d = d, k = Rn))
 #' 
 #' HSMDSResult = HSMDS(data = as.matrix(d), 
-#'                                       conf = conf,
-#'                                       Kquality = 5,
-#'                                       Rn = 1,
-#'                                       maxIt = 10000, 
-#'                                       optMethod = "CG"
+#'                     conf = conf,
+#'                     Kquality = 5,
+#'                     Rn = Rn
 #' )
 #' 
 #' titulo <- expression(paste("Blue lines connect the observation in ",
 #'                             R^2," to the projection in ",R^1))
-#' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1,
+#' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1, pch = 1,
 #'      main="u-shaped curve projected to one dimensional space",
 #'      sub= titulo,cex.sub=0.7,cex.main=0.7)
 #' segments(x,x^4+1,HSMDSResult$conf , rep(0,length(x)), col = "blue")
+#' points(HSMDSResult$conf,rep(0,length(x)), pch = 16,cex=0.7)
 #' abline(h=0)
-#' 
 #' @export
-HSMDS <- function(data, conf, Rn = 2L, Kquality = 2L, verbose = FALSE, applyHiperbolicSmoothing = TRUE, gamma = 1, n_gamma = 30L, rho = 0.5, maxIt = 30L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
-    .Call(`_HSLocalMDS_HSMDS`, data, conf, Rn, Kquality, verbose, applyHiperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
+HSMDS <- function(data, conf = NULL, Rn = 2L, Kquality = 2L, verbose = FALSE, applyHyperbolicSmoothing = TRUE, gamma = 1, n_gamma = 10000L, rho = 0.3162278, maxIt = 10000L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
+    .Call(`_HSLocalMDS_HSMDS`, data, conf, Rn, Kquality, verbose, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
 }
 
 #' Hyperbolic Smoothing Local MDS
@@ -402,7 +399,7 @@ HSMDS <- function(data, conf, Rn = 2L, Kquality = 2L, verbose = FALSE, applyHipe
 #' A Smoothing Optimization Approach Applied to the Local MDS Method
 #'
 #' @param data A distance matrix (dist()) or a square matrix.
-#' @param conf An initial configuration. If none is supplied the configuration will be randomly generated. If x=="cmdscale", the function cmdscale() is used to provide an inicial configuration.
+#' @param conf An initial configuration. If none is supplied the configuration will be generated using PCA.
 #' @param Rn The dimension of the space which the data will be represented in. The default is Rn=2.
 #' @param Kproj The number of neighborhood to be preserved in the projection.
 #' @param Kquality The number of neighborhood applied at Local Continuity to assess the quality of the projection. The default is NULL, set the same number at Kproj.
@@ -411,7 +408,7 @@ HSMDS <- function(data, conf, Rn = 2L, Kquality = 2L, verbose = FALSE, applyHipe
 #' @param smallerUnitFree the smallest value for the unit free parameter. Geometric sequence's start value.
 #' @param n_t length for the grid search.
 #' @param ratio ratio of the geometric sequence.
-#' @param applyHiperbolicSmoothing A boolean constant. If true, the Hiperbolic Smoothing will be applyed.
+#' @param applyHyperbolicSmoothing A boolean constant. If true, the Hyperbolic Smoothing will be applyed.
 #' @param gamma A numeric constant value used for smoothing the configuration.
 #' @param n_gamma maximum number of gamma values allowed.
 #' @param rho A numeric constant value between 0 and 1 used for decrease gamma value.
@@ -431,42 +428,35 @@ HSMDS <- function(data, conf, Rn = 2L, Kquality = 2L, verbose = FALSE, applyHipe
 #'
 #' @examples
 #' # A U-shaped curve, (x^4+1), R^2 projected in R^1
+#' library(HSLocalMDS)
 #' set.seed(1)
 #' x<-seq(0.9,1.5,0.05)
 #' xx<-seq(-1,1,0.2)+runif(11,0,0.1)
 #' x<-c(-x,x,xx)
 #' Ccurve<-cbind(x,x^4+1)
 #' d<-stats::dist (Ccurve)
-#' dataset<- as.matrix(d)
 #' Rn = 1
 #' 
-#' conf = cmdscale(d = dataset, k = Rn)
-#' conf = as.matrix(conf)
+#' conf = as.matrix(cmdscale(d = d, k = Rn))
 #' 
 #' HSlocalMDSResult = HSlocalMDS(data = as.matrix(d), 
 #'                                       conf = conf,
-#'                                       Rn = 1,
-#'                                       Kproj = 5, 
-#'                                       Kquality = 5,
-#'                                       smallerUnitFree = 0.1,
-#'                                       applyHiperbolicSmoothing = TRUE,
-#'                                       gamma = 1,
-#'                                       n_gamma = 10000,
-#'                                       rho = (1 / sqrt(10)),
-#'                                       maxIt = 10000, 
-#'                                       optMethod = "CG"
+#'                                       Rn = Rn,
+#'                                       Kproj = 5,
+#'                                       Kquality = 5
 #' )
 #' 
 #' titulo <- expression(paste("Blue lines connect the observation in ",
 #'                             R^2," to the projection in ",R^1))
-#' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1,
+#' plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1, pch = 1,
 #'      main="u-shaped curve projected to one dimensional space",
 #'      sub= titulo,cex.sub=0.7,cex.main=0.7)
 #' segments(x,x^4+1,HSlocalMDSResult$conf , rep(0,length(x)), col = "blue")
+#' points(HSlocalMDSResult$conf,rep(0,length(x)), pch = 16,cex=0.7)
 #' abline(h=0)
 #' 
 #' @export
-HSlocalMDS <- function(data, conf, Rn = 2L, Kproj = 5L, Kquality = 0L, verbose = FALSE, selectBetterUnitFree = FALSE, smallerUnitFree = 0.0001, n_t = 10L, ratio = 3.162278, applyHiperbolicSmoothing = TRUE, gamma = 1, n_gamma = 30L, rho = 0.5, maxIt = 30L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
-    .Call(`_HSLocalMDS_HSlocalMDS`, data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHiperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
+HSlocalMDS <- function(data, conf = NULL, Rn = 2L, Kproj = 5L, Kquality = 0L, verbose = FALSE, selectBetterUnitFree = TRUE, smallerUnitFree = 0.0001, n_t = 8L, ratio = 3.162278, applyHyperbolicSmoothing = TRUE, gamma = 1, n_gamma = 10000L, rho = 0.3162278, maxIt = 10000L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
+    .Call(`_HSLocalMDS_HSlocalMDS`, data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
 }
 

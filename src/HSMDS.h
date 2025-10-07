@@ -20,18 +20,18 @@ arma::mat getHSMdsStressGradient(arma::mat &data, const arma::vec &confVec, unsi
 
 optimResult cppOptimHSMds(arma::mat &data, arma::mat &conf, unsigned int &Rn, double &Gamma, int &maxIt, const std::string &optMethod, unsigned int optTrace, unsigned int optReport);
 
-HsMdsResult cppHSMDS( arma::mat &data,
-                      arma::mat conf,
-                      unsigned int Rn = 2,
-                      unsigned int Kquality = 2,
-                      bool verbose = false,
-                      bool applyHiperbolicSmoothing = true,
-                      double gamma = 1,
-                      unsigned int n_gamma = 30,
-                      double rho = 0.5,
-                      int maxIt = 30,
-                      const std::string optMethod = "CG",
-                      unsigned int optTrace = 0, 
-                      unsigned int optReport = 10);
+HsMdsResult cppHSMDS(arma::mat &data,
+                     arma::mat &conf,
+                     unsigned int Rn,
+                     unsigned int Kquality,
+                     bool verbose,
+                     bool applyHyperbolicSmoothing,
+                     double gamma,
+                     unsigned int n_gamma,
+                     double rho,
+                     int maxIt,
+                     const std::string optMethod,
+                     unsigned int optTrace, 
+                     unsigned int optReport);
 
 #endif
