@@ -13,7 +13,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // getHSLocalMdsStress
 double getHSLocalMdsStress(arma::mat& data, const arma::vec& confVec, arma::imat& neighborhood, arma::imat& notNeighborhood, unsigned int& Rn, double& tt, double& Gamma);
-RcppExport SEXP _HSLocalMDS_getHSLocalMdsStress(SEXP dataSEXP, SEXP confVecSEXP, SEXP neighborhoodSEXP, SEXP notNeighborhoodSEXP, SEXP RnSEXP, SEXP ttSEXP, SEXP GammaSEXP) {
+RcppExport SEXP _NLDR_getHSLocalMdsStress(SEXP dataSEXP, SEXP confVecSEXP, SEXP neighborhoodSEXP, SEXP notNeighborhoodSEXP, SEXP RnSEXP, SEXP ttSEXP, SEXP GammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -30,7 +30,7 @@ END_RCPP
 }
 // getHSLocalMdsStressGradient
 arma::vec getHSLocalMdsStressGradient(arma::mat& data, const arma::vec& confVec, arma::imat& neighborhood, arma::imat& notNeighborhood, unsigned int& Rn, double& tt, double& Gamma);
-RcppExport SEXP _HSLocalMDS_getHSLocalMdsStressGradient(SEXP dataSEXP, SEXP confVecSEXP, SEXP neighborhoodSEXP, SEXP notNeighborhoodSEXP, SEXP RnSEXP, SEXP ttSEXP, SEXP GammaSEXP) {
+RcppExport SEXP _NLDR_getHSLocalMdsStressGradient(SEXP dataSEXP, SEXP confVecSEXP, SEXP neighborhoodSEXP, SEXP notNeighborhoodSEXP, SEXP RnSEXP, SEXP ttSEXP, SEXP GammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -47,7 +47,7 @@ END_RCPP
 }
 // getNeighborhoodMatrix
 arma::imat getNeighborhoodMatrix(arma::mat& data, int k, bool symmetric);
-RcppExport SEXP _HSLocalMDS_getNeighborhoodMatrix(SEXP dataSEXP, SEXP kSEXP, SEXP symmetricSEXP) {
+RcppExport SEXP _NLDR_getNeighborhoodMatrix(SEXP dataSEXP, SEXP kSEXP, SEXP symmetricSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -60,7 +60,7 @@ END_RCPP
 }
 // getNeighborhoodVector
 arma::ivec getNeighborhoodVector(arma::vec& data, int k);
-RcppExport SEXP _HSLocalMDS_getNeighborhoodVector(SEXP dataSEXP, SEXP kSEXP) {
+RcppExport SEXP _NLDR_getNeighborhoodVector(SEXP dataSEXP, SEXP kSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -72,7 +72,7 @@ END_RCPP
 }
 // getEuclideanDistanceMatrix
 arma::mat getEuclideanDistanceMatrix(arma::mat& data);
-RcppExport SEXP _HSLocalMDS_getEuclideanDistanceMatrix(SEXP dataSEXP) {
+RcppExport SEXP _NLDR_getEuclideanDistanceMatrix(SEXP dataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -83,7 +83,7 @@ END_RCPP
 }
 // getParameterT
 double getParameterT(arma::mat& data, arma::imat& neighborhood, double tau);
-RcppExport SEXP _HSLocalMDS_getParameterT(SEXP dataSEXP, SEXP neighborhoodSEXP, SEXP tauSEXP) {
+RcppExport SEXP _NLDR_getParameterT(SEXP dataSEXP, SEXP neighborhoodSEXP, SEXP tauSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -96,7 +96,7 @@ END_RCPP
 }
 // getHSMdsStress
 double getHSMdsStress(arma::mat& data, const arma::vec& confVec, unsigned int& Rn, double& Gamma);
-RcppExport SEXP _HSLocalMDS_getHSMdsStress(SEXP dataSEXP, SEXP confVecSEXP, SEXP RnSEXP, SEXP GammaSEXP) {
+RcppExport SEXP _NLDR_getHSMdsStress(SEXP dataSEXP, SEXP confVecSEXP, SEXP RnSEXP, SEXP GammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -110,7 +110,7 @@ END_RCPP
 }
 // getHSMdsStressNormalized
 double getHSMdsStressNormalized(arma::mat& data, const arma::vec& confVec, unsigned int& Rn, double& Gamma);
-RcppExport SEXP _HSLocalMDS_getHSMdsStressNormalized(SEXP dataSEXP, SEXP confVecSEXP, SEXP RnSEXP, SEXP GammaSEXP) {
+RcppExport SEXP _NLDR_getHSMdsStressNormalized(SEXP dataSEXP, SEXP confVecSEXP, SEXP RnSEXP, SEXP GammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -124,7 +124,7 @@ END_RCPP
 }
 // getHSMdsStressGradient
 arma::vec getHSMdsStressGradient(arma::mat& data, const arma::vec& confVec, unsigned int& Rn, double& Gamma);
-RcppExport SEXP _HSLocalMDS_getHSMdsStressGradient(SEXP dataSEXP, SEXP confVecSEXP, SEXP RnSEXP, SEXP GammaSEXP) {
+RcppExport SEXP _NLDR_getHSMdsStressGradient(SEXP dataSEXP, SEXP confVecSEXP, SEXP RnSEXP, SEXP GammaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -138,7 +138,7 @@ END_RCPP
 }
 // RcppGetLocalContinuityMetaCriterion
 Rcpp::List RcppGetLocalContinuityMetaCriterion(arma::mat& data, arma::mat& conf, int Rn, int k);
-RcppExport SEXP _HSLocalMDS_RcppGetLocalContinuityMetaCriterion(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP kSEXP) {
+RcppExport SEXP _NLDR_RcppGetLocalContinuityMetaCriterion(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP kSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -152,7 +152,7 @@ END_RCPP
 }
 // RcppGetLocalContinuityMetaCriterionByVector
 Rcpp::List RcppGetLocalContinuityMetaCriterionByVector(arma::mat& data, arma::mat& conf, int Rn, int k);
-RcppExport SEXP _HSLocalMDS_RcppGetLocalContinuityMetaCriterionByVector(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP kSEXP) {
+RcppExport SEXP _NLDR_RcppGetLocalContinuityMetaCriterionByVector(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP kSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -166,7 +166,7 @@ END_RCPP
 }
 // OptimHSMds
 Rcpp::List OptimHSMds(arma::mat& data, arma::mat& conf, unsigned int& Rn, double& Gamma, int& maxIt, const std::string& optMethod, unsigned int optTrace, unsigned int optReport);
-RcppExport SEXP _HSLocalMDS_OptimHSMds(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP GammaSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
+RcppExport SEXP _NLDR_OptimHSMds(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP GammaSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -184,7 +184,7 @@ END_RCPP
 }
 // OptimHSLocalMds
 Rcpp::List OptimHSLocalMds(arma::mat& data, arma::mat& conf, arma::imat& neighborhood, arma::imat& notNeighborhood, unsigned int& Rn, double& tt, double& Gamma, int& maxIt, const std::string& optMethod, unsigned int optTrace, unsigned int optReport);
-RcppExport SEXP _HSLocalMDS_OptimHSLocalMds(SEXP dataSEXP, SEXP confSEXP, SEXP neighborhoodSEXP, SEXP notNeighborhoodSEXP, SEXP RnSEXP, SEXP ttSEXP, SEXP GammaSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
+RcppExport SEXP _NLDR_OptimHSLocalMds(SEXP dataSEXP, SEXP confSEXP, SEXP neighborhoodSEXP, SEXP notNeighborhoodSEXP, SEXP RnSEXP, SEXP ttSEXP, SEXP GammaSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -205,7 +205,7 @@ END_RCPP
 }
 // HSMDS
 Rcpp::List HSMDS(arma::mat& data, Rcpp::Nullable<arma::mat> conf, unsigned int Rn, unsigned int Kquality, bool verbose, bool applyHyperbolicSmoothing, double gamma, unsigned int n_gamma, double rho, int maxIt, const std::string optMethod, unsigned int optTrace, unsigned int optReport);
-RcppExport SEXP _HSLocalMDS_HSMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP applyHyperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
+RcppExport SEXP _NLDR_HSMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP applyHyperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -228,7 +228,7 @@ END_RCPP
 }
 // HSlocalMDS
 Rcpp::List HSlocalMDS(arma::mat& data, Rcpp::Nullable<arma::mat> conf, unsigned int Rn, unsigned int Kproj, unsigned int Kquality, bool verbose, bool selectBetterUnitFree, double smallerUnitFree, unsigned int n_t, double ratio, bool applyHyperbolicSmoothing, double gamma, unsigned int n_gamma, double rho, int maxIt, const std::string optMethod, unsigned int optTrace, unsigned int optReport);
-RcppExport SEXP _HSLocalMDS_HSlocalMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KprojSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP selectBetterUnitFreeSEXP, SEXP smallerUnitFreeSEXP, SEXP n_tSEXP, SEXP ratioSEXP, SEXP applyHyperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
+RcppExport SEXP _NLDR_HSlocalMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KprojSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP selectBetterUnitFreeSEXP, SEXP smallerUnitFreeSEXP, SEXP n_tSEXP, SEXP ratioSEXP, SEXP applyHyperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -256,25 +256,25 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_HSLocalMDS_getHSLocalMdsStress", (DL_FUNC) &_HSLocalMDS_getHSLocalMdsStress, 7},
-    {"_HSLocalMDS_getHSLocalMdsStressGradient", (DL_FUNC) &_HSLocalMDS_getHSLocalMdsStressGradient, 7},
-    {"_HSLocalMDS_getNeighborhoodMatrix", (DL_FUNC) &_HSLocalMDS_getNeighborhoodMatrix, 3},
-    {"_HSLocalMDS_getNeighborhoodVector", (DL_FUNC) &_HSLocalMDS_getNeighborhoodVector, 2},
-    {"_HSLocalMDS_getEuclideanDistanceMatrix", (DL_FUNC) &_HSLocalMDS_getEuclideanDistanceMatrix, 1},
-    {"_HSLocalMDS_getParameterT", (DL_FUNC) &_HSLocalMDS_getParameterT, 3},
-    {"_HSLocalMDS_getHSMdsStress", (DL_FUNC) &_HSLocalMDS_getHSMdsStress, 4},
-    {"_HSLocalMDS_getHSMdsStressNormalized", (DL_FUNC) &_HSLocalMDS_getHSMdsStressNormalized, 4},
-    {"_HSLocalMDS_getHSMdsStressGradient", (DL_FUNC) &_HSLocalMDS_getHSMdsStressGradient, 4},
-    {"_HSLocalMDS_RcppGetLocalContinuityMetaCriterion", (DL_FUNC) &_HSLocalMDS_RcppGetLocalContinuityMetaCriterion, 4},
-    {"_HSLocalMDS_RcppGetLocalContinuityMetaCriterionByVector", (DL_FUNC) &_HSLocalMDS_RcppGetLocalContinuityMetaCriterionByVector, 4},
-    {"_HSLocalMDS_OptimHSMds", (DL_FUNC) &_HSLocalMDS_OptimHSMds, 8},
-    {"_HSLocalMDS_OptimHSLocalMds", (DL_FUNC) &_HSLocalMDS_OptimHSLocalMds, 11},
-    {"_HSLocalMDS_HSMDS", (DL_FUNC) &_HSLocalMDS_HSMDS, 13},
-    {"_HSLocalMDS_HSlocalMDS", (DL_FUNC) &_HSLocalMDS_HSlocalMDS, 18},
+    {"_NLDR_getHSLocalMdsStress", (DL_FUNC) &_NLDR_getHSLocalMdsStress, 7},
+    {"_NLDR_getHSLocalMdsStressGradient", (DL_FUNC) &_NLDR_getHSLocalMdsStressGradient, 7},
+    {"_NLDR_getNeighborhoodMatrix", (DL_FUNC) &_NLDR_getNeighborhoodMatrix, 3},
+    {"_NLDR_getNeighborhoodVector", (DL_FUNC) &_NLDR_getNeighborhoodVector, 2},
+    {"_NLDR_getEuclideanDistanceMatrix", (DL_FUNC) &_NLDR_getEuclideanDistanceMatrix, 1},
+    {"_NLDR_getParameterT", (DL_FUNC) &_NLDR_getParameterT, 3},
+    {"_NLDR_getHSMdsStress", (DL_FUNC) &_NLDR_getHSMdsStress, 4},
+    {"_NLDR_getHSMdsStressNormalized", (DL_FUNC) &_NLDR_getHSMdsStressNormalized, 4},
+    {"_NLDR_getHSMdsStressGradient", (DL_FUNC) &_NLDR_getHSMdsStressGradient, 4},
+    {"_NLDR_RcppGetLocalContinuityMetaCriterion", (DL_FUNC) &_NLDR_RcppGetLocalContinuityMetaCriterion, 4},
+    {"_NLDR_RcppGetLocalContinuityMetaCriterionByVector", (DL_FUNC) &_NLDR_RcppGetLocalContinuityMetaCriterionByVector, 4},
+    {"_NLDR_OptimHSMds", (DL_FUNC) &_NLDR_OptimHSMds, 8},
+    {"_NLDR_OptimHSLocalMds", (DL_FUNC) &_NLDR_OptimHSLocalMds, 11},
+    {"_NLDR_HSMDS", (DL_FUNC) &_NLDR_HSMDS, 13},
+    {"_NLDR_HSlocalMDS", (DL_FUNC) &_NLDR_HSlocalMDS, 18},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_HSLocalMDS(DllInfo *dll) {
+RcppExport void R_init_NLDR(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

@@ -17,9 +17,9 @@ HSlocalMDS(
   ratio = 3.162278,
   applyHyperbolicSmoothing = TRUE,
   gamma = 1,
-  n_gamma = 10000L,
+  n_gamma = 20L,
   rho = 0.3162278,
-  maxIt = 10000L,
+  maxIt = 100L,
   optMethod = "CG",
   optTrace = 0L,
   optReport = 10L
@@ -80,7 +80,7 @@ A Smoothing Optimization Approach Applied to the Local MDS Method
 }
 \examples{
 # A U-shaped curve, (x^4+1), R^2 projected in R^1
-library(HSLocalMDS)
+library(NLDR)
 set.seed(1)
 x<-seq(0.9,1.5,0.05)
 xx<-seq(-1,1,0.2)+runif(11,0,0.1)

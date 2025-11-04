@@ -1,10 +1,10 @@
-# Rcpp-HSLocalMDS-Package
+# NLDR-Package
 
-This repository contains the HSLocalMDS library for R, implemented in C++ and integrated using Rcpp.
+This repository contains the NLDR library for R, implemented in C++ and integrated using Rcpp.
 
 ## Description
 
-HSLocalMDS implements the **Hyperbolic Smoothing Local Multidimensional Scaling (HSLocalMDS)** method for dimensionality reduction. The goal is to project high-dimensional data into a lower-dimensional space, preserving neighborhood relationships and applying hyperbolic smoothing for improved projection quality.
+NLDR implements the **Hyperbolic Smoothing Local Multidimensional Scaling (HSLocalMDS)** method for dimensionality reduction. The goal is to project high-dimensional data into a lower-dimensional space, preserving neighborhood relationships and applying hyperbolic smoothing for improved projection quality.
 
 ## Features
 
@@ -24,7 +24,7 @@ HSLocalMDS implements the **Hyperbolic Smoothing Local Multidimensional Scaling 
 
 ## System Requirements (Linux)
 
-To build and use HSLocalMDS and its dependencies on Linux, you must have the following system libraries and tools installed:
+To build and use NLDR and its dependencies on Linux, you must have the following system libraries and tools installed:
 
 ```sh
 sudo apt install gcc g++ cmake libopenblas-dev liblapack-dev libarpack2-dev libsuperlu-dev
@@ -42,50 +42,39 @@ install.packages("Rcpp")
 install.packages("RcppArmadillo")
 install.packages("roptim")
 install.packages("devtools")
-devtools::install_github("IgorRosax/Rcpp-HSLocalMDS-Package")
+devtools::install_github("IgorRosax/NLDR-Package")
 ```
 
 ## Example Usage
 
 ```r
-library(HSLocalMDS)
-# Example: U-shaped curve, (x^4+1), R^2 projected to R^1
+# A U-shaped curve, (x^4+1), R^2 projected in R^1
+library(NLDR)
 set.seed(1)
-x <- seq(0.9, 1.5, 0.05)
-xx <- seq(-1, 1, 0.2) + runif(11, 0, 0.1)
-x <- c(-x, x, xx)
-Ccurve <- cbind(x, x^4 + 1)
-d <- stats::dist(Ccurve)
-dataset <- as.matrix(d)
-Rn <- 1
+x<-seq(0.9,1.5,0.05)
+xx<-seq(-1,1,0.2)+runif(11,0,0.1)
+x<-c(-x,x,xx)
+Ccurve<-cbind(x,x^4+1)
+d<-stats::dist (Ccurve)
+Rn = 1
 
-conf <- cmdscale(d = dataset, k = Rn)
-conf <- as.matrix(conf)
+conf = as.matrix(cmdscale(d = d, k = Rn))
 
-HSlocalMDSResult <- HSlocalMDS(
-     data = as.matrix(d),
-     conf = conf,
-     Rn = 1,
-     Kproj = 5,
-     Kquality = 5,
-     smallerUnitFree = 0.0001,
-     selectBetterUnitFree = TRUE,
-     n_t = 8,
-     ratio = sqrt(10),
-     applyHiperbolicSmoothing = TRUE,
-     gamma = 1,
-     n_gamma = 10000,
-     rho = (1 / sqrt(10)),
-     maxIt = 10000,
-     optMethod = "CG"
+HSlocalMDSResult = HSlocalMDS(data = as.matrix(d), 
+                              conf = conf,
+                              Rn = Rn,
+                              Kproj = 5,
+                              Kquality = 5
 )
 
-title <- expression(paste("Blue lines connect the observation in ", R^2, " to the projection in ", R^1))
-plot(x, x^4 + 1, ylim = c(0, 6), xlim = c(-6, 6), asp = 1,
-           main = "U-shaped curve projected to one dimensional space",
-           sub = title, cex.sub = 0.7, cex.main = 0.7)
-segments(x, x^4 + 1, HSlocalMDSResult$conf, rep(0, length(x)), col = "blue")
-abline(h = 0)
+titulo <- expression(paste("Blue lines connect the observation in ",
+                            R^2," to the projection in ",R^1))
+plot(x,x^4+1,ylim=c(-0,6),xlim=c(-6,6),asp=1, pch = 1,
+     main="u-shaped curve projected to one dimensional space",
+     sub= titulo,cex.sub=0.7,cex.main=0.7)
+segments(x,x^4+1,HSlocalMDSResult$conf , rep(0,length(x)), col = "blue")
+points(HSlocalMDSResult$conf,rep(0,length(x)), pch = 16,cex=0.7)
+abline(h=0)
 ```
 
 See the function documentation for details on parameters.

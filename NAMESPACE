@@ -1,4 +1,4 @@
-useDynLib(HSLocalMDS, .registration=TRUE)
+useDynLib(NLDR, .registration=TRUE)
 import(Rcpp)
 import(RcppArmadillo)
 import(roptim)

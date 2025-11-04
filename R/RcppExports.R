@@ -34,7 +34,7 @@
 #'
 #' @export
 getHSLocalMdsStress <- function(data, confVec, neighborhood, notNeighborhood, Rn, tt, Gamma) {
-    .Call(`_HSLocalMDS_getHSLocalMdsStress`, data, confVec, neighborhood, notNeighborhood, Rn, tt, Gamma)
+    .Call(`_NLDR_getHSLocalMdsStress`, data, confVec, neighborhood, notNeighborhood, Rn, tt, Gamma)
 }
 
 #' Get HS Local MDS Stress Gradient
@@ -69,7 +69,7 @@ getHSLocalMdsStress <- function(data, confVec, neighborhood, notNeighborhood, Rn
 #'
 #' @export
 getHSLocalMdsStressGradient <- function(data, confVec, neighborhood, notNeighborhood, Rn, tt, Gamma) {
-    .Call(`_HSLocalMDS_getHSLocalMdsStressGradient`, data, confVec, neighborhood, notNeighborhood, Rn, tt, Gamma)
+    .Call(`_NLDR_getHSLocalMdsStressGradient`, data, confVec, neighborhood, notNeighborhood, Rn, tt, Gamma)
 }
 
 #' Get Neighborhood Matrix
@@ -99,7 +99,7 @@ getHSLocalMdsStressGradient <- function(data, confVec, neighborhood, notNeighbor
 #'
 #' @export
 getNeighborhoodMatrix <- function(data, k, symmetric) {
-    .Call(`_HSLocalMDS_getNeighborhoodMatrix`, data, k, symmetric)
+    .Call(`_NLDR_getNeighborhoodMatrix`, data, k, symmetric)
 }
 
 #' Get Neighborhood Vector
@@ -127,7 +127,7 @@ getNeighborhoodMatrix <- function(data, k, symmetric) {
 #'
 #' @export
 getNeighborhoodVector <- function(data, k) {
-    .Call(`_HSLocalMDS_getNeighborhoodVector`, data, k)
+    .Call(`_NLDR_getNeighborhoodVector`, data, k)
 }
 
 #' Get Euclidean Distance Matrix
@@ -150,7 +150,7 @@ getNeighborhoodVector <- function(data, k) {
 #'
 #' @export
 getEuclideanDistanceMatrix <- function(data) {
-    .Call(`_HSLocalMDS_getEuclideanDistanceMatrix`, data)
+    .Call(`_NLDR_getEuclideanDistanceMatrix`, data)
 }
 
 #' Get Parameter T
@@ -178,7 +178,7 @@ getEuclideanDistanceMatrix <- function(data) {
 #'
 #' @export
 getParameterT <- function(data, neighborhood, tau) {
-    .Call(`_HSLocalMDS_getParameterT`, data, neighborhood, tau)
+    .Call(`_NLDR_getParameterT`, data, neighborhood, tau)
 }
 
 #' Get HS MDS Stress
@@ -206,7 +206,7 @@ getParameterT <- function(data, neighborhood, tau) {
 #'
 #' @export
 getHSMdsStress <- function(data, confVec, Rn, Gamma) {
-    .Call(`_HSLocalMDS_getHSMdsStress`, data, confVec, Rn, Gamma)
+    .Call(`_NLDR_getHSMdsStress`, data, confVec, Rn, Gamma)
 }
 
 #' Get HS MDS Stress Normalized
@@ -234,7 +234,7 @@ getHSMdsStress <- function(data, confVec, Rn, Gamma) {
 #'
 #' @export
 getHSMdsStressNormalized <- function(data, confVec, Rn, Gamma) {
-    .Call(`_HSLocalMDS_getHSMdsStressNormalized`, data, confVec, Rn, Gamma)
+    .Call(`_NLDR_getHSMdsStressNormalized`, data, confVec, Rn, Gamma)
 }
 
 #' Get HS MDS Stress Gradient
@@ -263,7 +263,7 @@ getHSMdsStressNormalized <- function(data, confVec, Rn, Gamma) {
 #'
 #' @export
 getHSMdsStressGradient <- function(data, confVec, Rn, Gamma) {
-    .Call(`_HSLocalMDS_getHSMdsStressGradient`, data, confVec, Rn, Gamma)
+    .Call(`_NLDR_getHSMdsStressGradient`, data, confVec, Rn, Gamma)
 }
 
 #' Local Continuity Meta Criterion
@@ -280,7 +280,7 @@ getHSMdsStressGradient <- function(data, confVec, Rn, Gamma) {
 #' 
 #' @export
 RcppGetLocalContinuityMetaCriterion <- function(data, conf, Rn, k) {
-    .Call(`_HSLocalMDS_RcppGetLocalContinuityMetaCriterion`, data, conf, Rn, k)
+    .Call(`_NLDR_RcppGetLocalContinuityMetaCriterion`, data, conf, Rn, k)
 }
 
 #' Local Continuity Meta Criterion by Vector
@@ -297,7 +297,7 @@ RcppGetLocalContinuityMetaCriterion <- function(data, conf, Rn, k) {
 #' 
 #' @export
 RcppGetLocalContinuityMetaCriterionByVector <- function(data, conf, Rn, k) {
-    .Call(`_HSLocalMDS_RcppGetLocalContinuityMetaCriterionByVector`, data, conf, Rn, k)
+    .Call(`_NLDR_RcppGetLocalContinuityMetaCriterionByVector`, data, conf, Rn, k)
 }
 
 #' Rcpp Optimization for HS MDS
@@ -315,7 +315,7 @@ RcppGetLocalContinuityMetaCriterionByVector <- function(data, conf, Rn, k) {
 #' 
 #' @export
 OptimHSMds <- function(data, conf, Rn, Gamma, maxIt, optMethod, optTrace = 0L, optReport = 10L) {
-    .Call(`_HSLocalMDS_OptimHSMds`, data, conf, Rn, Gamma, maxIt, optMethod, optTrace, optReport)
+    .Call(`_NLDR_OptimHSMds`, data, conf, Rn, Gamma, maxIt, optMethod, optTrace, optReport)
 }
 
 #' Rcpp Optimization for Hyperbolic Smoothing Local MDS
@@ -336,7 +336,7 @@ OptimHSMds <- function(data, conf, Rn, Gamma, maxIt, optMethod, optTrace = 0L, o
 #' 
 #' @export
 OptimHSLocalMds <- function(data, conf, neighborhood, notNeighborhood, Rn, tt, Gamma, maxIt, optMethod, optTrace = 0L, optReport = 10L) {
-    .Call(`_HSLocalMDS_OptimHSLocalMds`, data, conf, neighborhood, notNeighborhood, Rn, tt, Gamma, maxIt, optMethod, optTrace, optReport)
+    .Call(`_NLDR_OptimHSLocalMds`, data, conf, neighborhood, notNeighborhood, Rn, tt, Gamma, maxIt, optMethod, optTrace, optReport)
 }
 
 #' HS MDS
@@ -364,7 +364,7 @@ OptimHSLocalMds <- function(data, conf, neighborhood, notNeighborhood, Rn, tt, G
 #' @examples
 #' 
 #' # A U-shaped curve, (x^4+1), R^2 projected in R^1
-#' library(HSLocalMDS)
+#' library(NLDR)
 #' set.seed(1)
 #' x<-seq(0.9,1.5,0.05)
 #' xx<-seq(-1,1,0.2)+runif(11,0,0.1)
@@ -390,8 +390,8 @@ OptimHSLocalMds <- function(data, conf, neighborhood, notNeighborhood, Rn, tt, G
 #' points(HSMDSResult$conf,rep(0,length(x)), pch = 16,cex=0.7)
 #' abline(h=0)
 #' @export
-HSMDS <- function(data, conf = NULL, Rn = 2L, Kquality = 2L, verbose = FALSE, applyHyperbolicSmoothing = TRUE, gamma = 1, n_gamma = 10000L, rho = 0.3162278, maxIt = 10000L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
-    .Call(`_HSLocalMDS_HSMDS`, data, conf, Rn, Kquality, verbose, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
+HSMDS <- function(data, conf = NULL, Rn = 2L, Kquality = 2L, verbose = FALSE, applyHyperbolicSmoothing = TRUE, gamma = 1, n_gamma = 20L, rho = 0.3162278, maxIt = 100L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
+    .Call(`_NLDR_HSMDS`, data, conf, Rn, Kquality, verbose, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
 }
 
 #' Hyperbolic Smoothing Local MDS
@@ -428,7 +428,7 @@ HSMDS <- function(data, conf = NULL, Rn = 2L, Kquality = 2L, verbose = FALSE, ap
 #'
 #' @examples
 #' # A U-shaped curve, (x^4+1), R^2 projected in R^1
-#' library(HSLocalMDS)
+#' library(NLDR)
 #' set.seed(1)
 #' x<-seq(0.9,1.5,0.05)
 #' xx<-seq(-1,1,0.2)+runif(11,0,0.1)
@@ -456,7 +456,7 @@ HSMDS <- function(data, conf = NULL, Rn = 2L, Kquality = 2L, verbose = FALSE, ap
 #' abline(h=0)
 #' 
 #' @export
-HSlocalMDS <- function(data, conf = NULL, Rn = 2L, Kproj = 5L, Kquality = 0L, verbose = FALSE, selectBetterUnitFree = TRUE, smallerUnitFree = 0.0001, n_t = 8L, ratio = 3.162278, applyHyperbolicSmoothing = TRUE, gamma = 1, n_gamma = 10000L, rho = 0.3162278, maxIt = 10000L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
-    .Call(`_HSLocalMDS_HSlocalMDS`, data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
+HSlocalMDS <- function(data, conf = NULL, Rn = 2L, Kproj = 5L, Kquality = 0L, verbose = FALSE, selectBetterUnitFree = TRUE, smallerUnitFree = 0.0001, n_t = 8L, ratio = 3.162278, applyHyperbolicSmoothing = TRUE, gamma = 1, n_gamma = 20L, rho = 0.3162278, maxIt = 100L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
+    .Call(`_NLDR_HSlocalMDS`, data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
 }
 

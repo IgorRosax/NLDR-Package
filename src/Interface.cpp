@@ -154,7 +154,7 @@ Rcpp::List OptimHSLocalMds (arma::mat &data, arma::mat &conf, arma::imat &neighb
 //' @examples
 //' 
 //' # A U-shaped curve, (x^4+1), R^2 projected in R^1
-//' library(HSLocalMDS)
+//' library(NLDR)
 //' set.seed(1)
 //' x<-seq(0.9,1.5,0.05)
 //' xx<-seq(-1,1,0.2)+runif(11,0,0.1)
@@ -188,9 +188,9 @@ Rcpp::List HSMDS(arma::mat &data,
                     bool verbose = false,
                     bool applyHyperbolicSmoothing = true,
                     double gamma = 1,
-                    unsigned int n_gamma = 10000,
+                    unsigned int n_gamma = 20,
                     double rho = 0.3162278,
-                    int maxIt = 10000,
+                    int maxIt = 100,
                     const std::string optMethod = "CG", 
                     unsigned int optTrace = 0, 
                     unsigned int optReport = 10)
@@ -288,7 +288,7 @@ Rcpp::List HSMDS(arma::mat &data,
 //'
 //' @examples
 //' # A U-shaped curve, (x^4+1), R^2 projected in R^1
-//' library(HSLocalMDS)
+//' library(NLDR)
 //' set.seed(1)
 //' x<-seq(0.9,1.5,0.05)
 //' xx<-seq(-1,1,0.2)+runif(11,0,0.1)
@@ -329,9 +329,9 @@ Rcpp::List HSlocalMDS(arma::mat &data,
                       double ratio = 3.162278,
                       bool applyHyperbolicSmoothing = true,
                       double gamma = 1,
-                      unsigned int n_gamma = 10000,
+                      unsigned int n_gamma = 20,
                       double rho = 0.3162278,
-                      int maxIt = 10000,
+                      int maxIt = 100,
                       const std::string optMethod = "CG", 
                       unsigned int optTrace = 0, 
                       unsigned int optReport = 10)
