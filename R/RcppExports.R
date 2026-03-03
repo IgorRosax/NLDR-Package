@@ -413,6 +413,7 @@ HSMDS <- function(data, conf = NULL, Rn = 2L, Kquality = 2L, verbose = FALSE, ap
 #' @param n_gamma maximum number of gamma values allowed.
 #' @param rho A numeric constant value between 0 and 1 used for decrease gamma value.
 #' @param maxIt It is the control argument of the function optim.
+#' @param initializationMaxIt  It is the control argument of the function optim for better unit free selection and hyperbolic smoothing, before the last objective function optimization.
 #' @param optMethod The optimization method. The default is "CG", a conjugate gradients method.  it is possible to choose one of these methods: "Nelder-Mead", "BFGS", "CG", "L-BFGS-B".
 #' @param optTrace Non-negative integer. If positive, tracing information on the progress of the optimization is produced. Higher values may produce more tracing information: for method "L-BFGS-B" there are six levels of tracing.
 #' @param optReport  The frequency of reports for the "BFGS", "L-BFGS-B" and "SANN" methods if optTrace is positive.
@@ -456,7 +457,7 @@ HSMDS <- function(data, conf = NULL, Rn = 2L, Kquality = 2L, verbose = FALSE, ap
 #' abline(h=0)
 #' 
 #' @export
-HSlocalMDS <- function(data, conf = NULL, Rn = 2L, Kproj = 5L, Kquality = 0L, verbose = FALSE, selectBetterUnitFree = TRUE, smallerUnitFree = 0.0001, n_t = 8L, ratio = 3.162278, applyHyperbolicSmoothing = TRUE, gamma = 1, n_gamma = 20L, rho = 0.3162278, maxIt = 100L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
-    .Call(`_NLDR_HSlocalMDS`, data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport)
+HSlocalMDS <- function(data, conf = NULL, Rn = 2L, Kproj = 5L, Kquality = 0L, verbose = FALSE, selectBetterUnitFree = TRUE, smallerUnitFree = 0.0001, n_t = 8L, ratio = 3.162278, applyHyperbolicSmoothing = TRUE, gamma = 1, n_gamma = 20L, rho = 0.3162278, maxIt = 100L, initializationMaxIt = 25L, optMethod = "CG", optTrace = 0L, optReport = 10L) {
+    .Call(`_NLDR_HSlocalMDS`, data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, initializationMaxIt, optMethod, optTrace, optReport)
 }
 

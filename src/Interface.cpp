@@ -273,6 +273,7 @@ Rcpp::List HSMDS(arma::mat &data,
 //' @param n_gamma maximum number of gamma values allowed.
 //' @param rho A numeric constant value between 0 and 1 used for decrease gamma value.
 //' @param maxIt It is the control argument of the function optim.
+//' @param initializationMaxIt  It is the control argument of the function optim for better unit free selection and hyperbolic smoothing, before the last objective function optimization.
 //' @param optMethod The optimization method. The default is "CG", a conjugate gradients method.  it is possible to choose one of these methods: "Nelder-Mead", "BFGS", "CG", "L-BFGS-B".
 //' @param optTrace Non-negative integer. If positive, tracing information on the progress of the optimization is produced. Higher values may produce more tracing information: for method "L-BFGS-B" there are six levels of tracing.
 //' @param optReport  The frequency of reports for the "BFGS", "L-BFGS-B" and "SANN" methods if optTrace is positive.
@@ -332,6 +333,7 @@ Rcpp::List HSlocalMDS(arma::mat &data,
                       unsigned int n_gamma = 20,
                       double rho = 0.3162278,
                       int maxIt = 100,
+                      int initializationMaxIt = 25,
                       const std::string optMethod = "CG", 
                       unsigned int optTrace = 0, 
                       unsigned int optReport = 10)
@@ -340,6 +342,11 @@ Rcpp::List HSlocalMDS(arma::mat &data,
   
  arma::mat coeff;
  arma::mat confMat;
+ 
+ if (initializationMaxIt > maxIt){
+   initializationMaxIt = maxIt;  
+ }
+ 
  
  if (conf.isNotNull()) {
    if (verbose)
@@ -368,6 +375,7 @@ Rcpp::List HSlocalMDS(arma::mat &data,
                          n_gamma,
                          rho,
                          maxIt,
+                         initializationMaxIt,
                          optMethod,
                          optTrace,
                          optReport);

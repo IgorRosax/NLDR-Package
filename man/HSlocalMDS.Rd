@@ -20,6 +20,7 @@ HSlocalMDS(
   n_gamma = 20L,
   rho = 0.3162278,
   maxIt = 100L,
+  initializationMaxIt = 25L,
   optMethod = "CG",
   optTrace = 0L,
   optReport = 10L
@@ -55,6 +56,8 @@ HSlocalMDS(
 \item{rho}{A numeric constant value between 0 and 1 used for decrease gamma value.}
 
 \item{maxIt}{It is the control argument of the function optim.}
+
+\item{initializationMaxIt}{It is the control argument of the function optim for better unit free selection and hyperbolic smoothing, before the last objective function optimization.}
 
 \item{optMethod}{The optimization method. The default is "CG", a conjugate gradients method.  it is possible to choose one of these methods: "Nelder-Mead", "BFGS", "CG", "L-BFGS-B".}
 

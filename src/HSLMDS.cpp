@@ -210,13 +210,14 @@ HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
                              unsigned int n_gamma,
                              double rho,
                              int maxIt,
+                             int initializationMaxIt,
                              const std::string optMethod,
                              unsigned int optTrace, 
                              unsigned int optReport){
   
   double smallerGammaAllowed;
   smallerGammaAllowed = pow(10, -16);
-  
+  double bestGamma = 0;
   
   if( !data.is_square() )
     throw invalid_argument("distances must be result of 'dist' or a square matrix");
@@ -269,6 +270,7 @@ HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
   arma::mat lastConf = conf;
   
   optimResult lastResult;
+  lastResult.parameter = conf;
   
   optimResult bestResult;
   
@@ -315,7 +317,7 @@ HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
         Rn,
         ttList(i),
         gammaOnTauSelection,
-        maxIt,
+        initializationMaxIt,
         optMethod,
         optTrace,
         optReport
@@ -333,10 +335,10 @@ HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
         bestTt = ttList(i);
         bestTau = tauList(i);
       }
-      conf = bestResult.parameter - mean( vectorise(bestResult.parameter) );
+      
       
     }
-    
+    conf = bestResult.parameter - mean( vectorise(bestResult.parameter) );
     tau = bestTau;
     tt = bestTt;
   }
@@ -351,19 +353,17 @@ HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
       
       lastResult = cppOptimHSLocalMds(
         data,
-        conf,
+        lastResult.parameter,
         neighborhood,
         notNeighborhood,
         Rn,
         tt,
         gamma,
-        maxIt,
+        initializationMaxIt,
         optMethod,
         optTrace,
         optReport
       );
-      
-      conf = lastResult.parameter;
       
       lastConf = lastResult.parameter;
       lastConf.reshape(lastConf.n_cols, lastConf.n_rows);
@@ -373,31 +373,47 @@ HsLocalMdsResult cppHSlocalMDS (arma::mat &data,
       if ( lastLocalContinuityResult.Nk > bestLocalContinuityResult.Nk || (counter == 0 && !selectBetterUnitFree ) ){
         bestResult = lastResult;
         bestLocalContinuityResult = lastLocalContinuityResult;
+        bestGamma = gamma;
       }
-      conf = bestResult.parameter - mean( vectorise(bestResult.parameter) );
+      
       
       gamma = gamma * rho;
       
       counter++;
     }
-    
+    conf = bestResult.parameter - mean( vectorise(bestResult.parameter) );
   }
-
   
-  conf = bestResult.parameter;
-
+  lastResult = cppOptimHSLocalMds(
+    data,
+    conf,
+    neighborhood,
+    notNeighborhood,
+    Rn,
+    tt,
+    bestGamma,
+    maxIt,
+    optMethod,
+    optTrace,
+    optReport
+  );
+  
+  conf = lastResult.parameter - mean( vectorise(lastResult.parameter) );
+  
   double gammaStressTest = 0;
   double stress = getHSLocalMdsStress(data, vectorise(conf), neighborhood,
                                       notNeighborhood, Rn, tt, gammaStressTest);
   
-  
   conf = reshape(conf, Rn, data.n_rows);
   conf = conf.t();
   
+  lastLocalContinuityResult = getLocalContinuityMetaCriterion( data, conf, Rn, Kquality);
+
+   
   HsLocalMdsResult result;
   
-  result.LCMC = bestLocalContinuityResult;
-  result.opt = bestResult;
+  result.LCMC = lastLocalContinuityResult;
+  result.opt = lastResult;
   result.conf = conf;
   result.stress = stress;
   result.tau = tau;

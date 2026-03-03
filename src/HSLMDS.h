@@ -32,6 +32,7 @@ HsLocalMdsResult cppHSlocalMDS(arma::mat &data,
                                unsigned int n_gamma,
                                double rho,
                                int maxIt,
+                               int initializationMaxIt,
                                const std::string optMethod,
                                unsigned int optTrace, 
                                unsigned int optReport);

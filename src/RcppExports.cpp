@@ -227,8 +227,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // HSlocalMDS
-Rcpp::List HSlocalMDS(arma::mat& data, Rcpp::Nullable<arma::mat> conf, unsigned int Rn, unsigned int Kproj, unsigned int Kquality, bool verbose, bool selectBetterUnitFree, double smallerUnitFree, unsigned int n_t, double ratio, bool applyHyperbolicSmoothing, double gamma, unsigned int n_gamma, double rho, int maxIt, const std::string optMethod, unsigned int optTrace, unsigned int optReport);
-RcppExport SEXP _NLDR_HSlocalMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KprojSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP selectBetterUnitFreeSEXP, SEXP smallerUnitFreeSEXP, SEXP n_tSEXP, SEXP ratioSEXP, SEXP applyHyperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
+Rcpp::List HSlocalMDS(arma::mat& data, Rcpp::Nullable<arma::mat> conf, unsigned int Rn, unsigned int Kproj, unsigned int Kquality, bool verbose, bool selectBetterUnitFree, double smallerUnitFree, unsigned int n_t, double ratio, bool applyHyperbolicSmoothing, double gamma, unsigned int n_gamma, double rho, int maxIt, int initializationMaxIt, const std::string optMethod, unsigned int optTrace, unsigned int optReport);
+RcppExport SEXP _NLDR_HSlocalMDS(SEXP dataSEXP, SEXP confSEXP, SEXP RnSEXP, SEXP KprojSEXP, SEXP KqualitySEXP, SEXP verboseSEXP, SEXP selectBetterUnitFreeSEXP, SEXP smallerUnitFreeSEXP, SEXP n_tSEXP, SEXP ratioSEXP, SEXP applyHyperbolicSmoothingSEXP, SEXP gammaSEXP, SEXP n_gammaSEXP, SEXP rhoSEXP, SEXP maxItSEXP, SEXP initializationMaxItSEXP, SEXP optMethodSEXP, SEXP optTraceSEXP, SEXP optReportSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -247,10 +247,11 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< unsigned int >::type n_gamma(n_gammaSEXP);
     Rcpp::traits::input_parameter< double >::type rho(rhoSEXP);
     Rcpp::traits::input_parameter< int >::type maxIt(maxItSEXP);
+    Rcpp::traits::input_parameter< int >::type initializationMaxIt(initializationMaxItSEXP);
     Rcpp::traits::input_parameter< const std::string >::type optMethod(optMethodSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type optTrace(optTraceSEXP);
     Rcpp::traits::input_parameter< unsigned int >::type optReport(optReportSEXP);
-    rcpp_result_gen = Rcpp::wrap(HSlocalMDS(data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, optMethod, optTrace, optReport));
+    rcpp_result_gen = Rcpp::wrap(HSlocalMDS(data, conf, Rn, Kproj, Kquality, verbose, selectBetterUnitFree, smallerUnitFree, n_t, ratio, applyHyperbolicSmoothing, gamma, n_gamma, rho, maxIt, initializationMaxIt, optMethod, optTrace, optReport));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -270,7 +271,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_NLDR_OptimHSMds", (DL_FUNC) &_NLDR_OptimHSMds, 8},
     {"_NLDR_OptimHSLocalMds", (DL_FUNC) &_NLDR_OptimHSLocalMds, 11},
     {"_NLDR_HSMDS", (DL_FUNC) &_NLDR_HSMDS, 13},
-    {"_NLDR_HSlocalMDS", (DL_FUNC) &_NLDR_HSlocalMDS, 18},
+    {"_NLDR_HSlocalMDS", (DL_FUNC) &_NLDR_HSlocalMDS, 19},
     {NULL, NULL, 0}
 };
 
